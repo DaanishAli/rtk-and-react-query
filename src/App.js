@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import * as React from "react";
+import {
+  useGetAllProductsQuery,
+  useGetProductQuery,
+} from "./services/ApiSlice";
 
-function App() {
+export default function App() {
+  const [product, setProduct] = React.useState();
+  // const [isProduct, setIsProduct] = React.useState(true);
+  // Using a query hook automatically fetches data and returns query values
+  const { data: allProductsData, isSuccess } = useGetAllProductsQuery();
+  console.log(isSuccess);
+  const { data, error, isError, isLoading } = useGetProductQuery("iphone", {
+    skip: !isSuccess,
+  });
+
+  React.useEffect(() => {
+    if (data) {
+      setProduct([data]);
+    }
+  }, [data]);
+
+  if (isLoading) return <h1>Loading..</h1>;
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {product &&
+        product.map((item, index) => <h1 key={index}>{item.limit}</h1>)}
+      {/* <button onClick={() => setIsProduct(!isProduct)}> fetch data</button> */}
     </div>
   );
 }
-
-export default App;
