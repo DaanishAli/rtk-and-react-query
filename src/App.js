@@ -7,7 +7,6 @@ import {
 export default function App() {
   const [product, setProduct] = React.useState();
   // const [isProduct, setIsProduct] = React.useState(true);
-  // Using a query hook automatically fetches data and returns query values
   const { data: allProductsData, isSuccess } = useGetAllProductsQuery();
   console.log(isSuccess);
   const { data, error, isError, isLoading } = useGetProductQuery("iphone", {
